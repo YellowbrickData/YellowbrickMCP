@@ -31,9 +31,9 @@ Yellowbrick MCP Server provides a seamless interface to query your Yellowbrick d
 
 ## Running with Claude
 
-1. Ensure `OPENAI_API_KEY` is set in your environment.
-2. Build the Docker image as above.
-3. Add the following segment to your Claude config at:
+
+1. Build the Docker image as above.
+2. Add the following segment to your Claude config at:
    `/Users/[Your Username]/Library/Application Support/Claude/claude_desktop_config.json`
 
    ```json
@@ -59,8 +59,8 @@ Yellowbrick MCP Server provides a seamless interface to query your Yellowbrick d
    }
    ```
 
-4. Restart Claude.
-5. If you have the PremDB schema loaded (from samples), try these queries:
+3. Restart Claude.
+4. If you have the PremDB schema loaded (from samples), try these queries:
    - "How many matches ended in a tie?"
    - "What is the win/loss record for each team?"
    - "describe the match table?"
