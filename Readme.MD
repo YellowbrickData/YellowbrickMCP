@@ -76,8 +76,9 @@ Yellowbrick MCP Server provides a seamless interface to query your Yellowbrick d
    ```sh
    docker run -i --rm \
      -e YELLOWBRICK_CONNECTION=postgresql://[user]:[pwd]@[host]:[port]/[dbname] \
-  -e OPENAI_API_KEY=sk-XXXXXXXX \
+     -e OPENAI_API_KEY=sk-XXXXXXXX \
      -e EMBEDDING_TABLE=mcpvdb2 \
+     -e READ_ONLY=true \
      ybmcp
    ```
 
