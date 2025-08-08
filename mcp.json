@@ -1,0 +1,25 @@
+{
+    "globalShortcut": "",
+    "mcpServers" : {
+    "Yellowbrick": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "YELLOWBRICK_CONNECTION",
+        "-e",
+        "OPEN_API_KEY",
+        "-e",
+        "EMBEDDING_TABLE",
+        "ybmcp"
+      ],
+      "env": {
+        "YELLOWBRICK_CONNECTION": "postgresql://[User]:[PWD]]@ad6fa0df41b9b41819ca11760343f26c-f777f959ab116f15.elb.us-east-1.amazonaws.com:5432/ms_test",
+        "OPEN_API_KEY" : "sk-[YourKeyHere]",
+        "EMBEDDING_TABLE": "my_embeddings"
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+# For all scripts
+anthropic
+python-dotenv
+# Database driver
+psycopg2-binary
+# LangChain and OpenAI for document search
+langchain
+openai
+langchain_community
+tiktoken
+# For 03_protocol_agent.py and gdocs_mcp_server.py
+mcp[cli]
