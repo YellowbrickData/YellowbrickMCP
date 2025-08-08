@@ -60,10 +60,11 @@ Yellowbrick MCP Server provides a seamless interface to query your Yellowbrick d
    ```
 
 4. Restart Claude.
-5. Ask questions like:
-   - "I want to make an employee of the month plaque. Best employee is those that have the most revenue. Can you give me the winners for the last 6 months?"
-   - "What is my top selling product during weekends in 2024?"
-   - "Which customer buys the most books?"
+5. If you have the PremDB schema loaded (from samples), try these queries:
+   - "How many matches ended in a tie?"
+   - "What is the win/loss record for each team?"
+   - "describe the match table?"
+   - "How many rows in the teams table?"
 
 ---
 
@@ -92,9 +93,12 @@ Yellowbrick MCP Server provides a seamless interface to query your Yellowbrick d
 
 ## Example Questions
 
-- Who is the employee of the month for the last 6 months?
-- What is my top selling product during weekends in 2024?
-- Which customer buys the most books?
+If you have the PremDB schema loaded (from samples), try these queries:
+   - "How many matches ended in a tie?"
+   - "What is the win/loss record for each team?"
+   - "describe the match table?"
+   - "How many rows in the teams table?"
+
 
 ---
 
