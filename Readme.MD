@@ -18,9 +18,9 @@ Yellowbrick MCP Server provides a seamless interface to query your Yellowbrick d
 ## Getting Started
 
 1. **Set your environment variables:**
-   - `OPENAI_API_KEY` (required for document search)
    - `YELLOWBRICK_CONNECTION` (your Yellowbrick DB connection string)
-   - `EMBEDDING_TABLE` (optional, for vector store)
+   - `OPENAI_API_KEY` (Optional, for vector document search)
+   - `EMBEDDING_TABLE` (optional, for vector document search)
 
 2. **Build the Docker image:**
    ```sh
