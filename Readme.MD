@@ -19,7 +19,7 @@ Yellowbrick MCP Server provides a seamless interface to query your Yellowbrick d
 
 1. **Set your environment variables:**
    - `YELLOWBRICK_CONNECTION` (your Yellowbrick DB connection string)
-   - `OPENAI_API_KEY` (Optional, for vector document search)
+  - `OPENAI_API_KEY` (required for document search)
    - `EMBEDDING_TABLE` (optional, for vector document search)
 
 2. **Build the Docker image:**
@@ -45,13 +45,13 @@ Yellowbrick MCP Server provides a seamless interface to query your Yellowbrick d
          "args": [
            "run", "-i", "--rm",
            "-e", "YELLOWBRICK_CONNECTION",
-           "-e", "OPEN_API_KEY",
+           "-e", "OPENAI_API_KEY",
            "-e", "EMBEDDING_TABLE",
            "ybmcp"
          ],
          "env": {
            "YELLOWBRICK_CONNECTION": "postgresql://[user]:[pwd]@[host]:[port]/[dbname]",
-           "OPEN_API_KEY": "sk-XXXXXXXXX",
+           "OPENAI_API_KEY": "sk-XXXXXXXXX",
            "EMBEDDING_TABLE": "my_embeddings"
          }
        }
@@ -76,7 +76,7 @@ Yellowbrick MCP Server provides a seamless interface to query your Yellowbrick d
    ```sh
    docker run -i --rm \
      -e YELLOWBRICK_CONNECTION=postgresql://[user]:[pwd]@[host]:[port]/[dbname] \
-     -e OPEN_API_KEY=sk-XXXXXXXX \
+  -e OPENAI_API_KEY=sk-XXXXXXXX \
      -e EMBEDDING_TABLE=mcpvdb2 \
      ybmcp
    ```
@@ -88,6 +88,7 @@ Yellowbrick MCP Server provides a seamless interface to query your Yellowbrick d
 - **YELLOWBRICK_CONNECTION**: Your Yellowbrick PostgreSQL connection string.
 - **OPENAI_API_KEY**: Your OpenAI API key (required for document search).
 - **EMBEDDING_TABLE**: Name of the table for vector embeddings (optional).
+- **READ_ONLY**: Set to `true` (default) to disable write operations (INSERT, UPDATE, DELETE, etc.) for safety. Set to `false` to allow write queries.
 
 ---
 
