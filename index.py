@@ -204,11 +204,14 @@ def get_schema_info_sync(schema_name: str) -> str:
 # -----------------------
 
 @mcp.tool()
-async def execute_sql_query(sql: str, limit: int = 1000) -> str:
+async def execute_sql_query(eng_desc : str, sql: str, limit: int = 1000) -> str:
     """
     Execute a SQL query against the Yellowbrick database.
 
     Args:
+        eng_desc: A detailed description in english of the query being executed, 
+                  what is expedted to be returned, and any assumptions made.  This can be used 
+                  to validate the sql against a third party LLM.
         sql: The SQL query to execute
         limit: Maximum number of rows to return for SELECTs (default: 1000)
     """
@@ -338,22 +341,45 @@ async def list_tables(schema_name: str) -> str:
 
 
 @mcp.tool()
-async def get_table_sample(schema_name: str, table_name: str, limit: int = 10) -> str:
+async def get_table_sample(schema_name: str, table_name: str, limit: int = 100) -> str:
     """
-    Get a sample of rows from a table (safe identifier quoting).
+    Get the row count and a sample of rows from a table (safe identifier quoting).  Defaults to 100 rows.
+    Uses TABLESAMPLE SYSTEM to fetch a random sample of rows.
     """
     try:
-        # Compose SQL safely for identifiers; keep limit as a parameter
-        query = psql.SQL("SELECT * FROM {}.{} LIMIT %s").format(
+        # Step 1: Get the total row count of the table
+        row_count_query = psql.SQL("SELECT COUNT(*) FROM {}.{}").format(
             psql.Identifier(schema_name),
             psql.Identifier(table_name)
         )
-        results = await execute_query(query, (limit,))
-        if not results:
+        row_count_result = await execute_query(row_count_query)
+        if not row_count_result:
             return f"Table {schema_name}.{table_name} is empty."
 
+        total_rows = row_count_result[0]['count']
+        if total_rows == 0:
+            return f"Table {schema_name}.{table_name} is empty."
+
+        # Step 2: Calculate the percentage for TABLESAMPLE SYSTEM
+        percentage = min(100, max(1, (limit / total_rows) * 100))
+
+        # Step 3: Enable full sample scan and fetch the sample rows
+        enable_sample_scan_query = "SET enable_full_samplescan TO on;"
+        await execute_query(enable_sample_scan_query)
+
+        sample_query = psql.SQL(
+            "SELECT * FROM {}.{} TABLESAMPLE SYSTEM (%s) LIMIT %s"
+        ).format(
+            psql.Identifier(schema_name),
+            psql.Identifier(table_name)
+        )
+        results = await execute_query(sample_query, (percentage, limit))
+
+        if not results:
+            return f"No rows found in the sample for {schema_name}.{table_name}."
+
         columns = list(results[0].keys())
-        out = [f"## Sample data from {schema_name}.{table_name}", ""]
+        out = [f"## Sample data from {schema_name}.{table_name}.  Total Rows: {total_rows}", ""]
         out.append("| " + " | ".join(columns) + " |")
         out.append("|" + "|".join([" --- " for _ in columns]) + "|")
         for row in results:
